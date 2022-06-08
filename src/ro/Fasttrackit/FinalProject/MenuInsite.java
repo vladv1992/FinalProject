@@ -33,10 +33,9 @@ public class MenuInsite{
         return Collections.unmodifiableList(products);
     }
 
-//    public void addProduct(Product product){
-//        products.add(product);
-//
-//    }
+//   public void addProduct(Product product){
+//       products.add(product);
+//   }
 
     @Override
     public String toString() {

@@ -1,83 +1,128 @@
 package ro.Fasttrackit.FinalProject;
 
 
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        List<Product> list = new ArrayList<>();
-        Product juice = new Product("Coca-Cola", null, 2.32, "carbonated");
-        Product juice1 = new Product("Fanta", null, 3.44, "carbonated");
-        Product juice2 = new Product("Capyy", null, 4.4, "non cabonated");
-        Product caffee = new Product("Espresso", null, 2.32, "coffe from Columbia ");
-        Product caffee1 = new Product("Cappuccino", null, 3.44, "coffe from Egipt and milk natural");
-        Product caffee2 = new Product("Latte Macchiato", null, 4.4, "coffe from USA and alomd milk");
-        Product food = new Product("stew meat", 1, 24.32, "let your mouth water");
-        Product food1 = new Product("mix fruit", 1, 10.44, "very good");
-        Product food2 = new Product("vegetarian food", 1, 16.4, "let your mouth water");
-        Product dessert = new Product("apple cake", 1, 9.4, "very good");
-        Product dessert1 = new Product("mix fruit", 1, 10.44, "very good");
-        Product dessert2 = new Product("apple cake", 1, 9.4, "very good");
 
-        list.add(juice);
-        list.add(juice1);
-        list.add(juice2);
-        list.add(caffee);
-        list.add(caffee1);
-        list.add(caffee2);
-        list.add(food);
-        list.add(food1);
-        list.add(food2);
-        list.add(dessert);
-        list.add(dessert1);
-        list.add(dessert2);
+    static List<Product> orderList = new ArrayList<>();
+    static List<Product> menuItemList = new ArrayList<>();
+    public static void main(String[] args) throws IOException {
 
-        for (Product product : list) {
-            System.out.println(product.getName() + "|" + product.getWeight() + "|" + product.getPrice() + "|" + product.getDescription());
+        MenuStorage menuStorage = new MenuStorage();
+        Integer menuID = 0;
+
+        menuItemList.add(new Product(++menuID,"Coca-Cola", null, 2.32, "carbonated", false));
+        menuItemList.add(new Product(++menuID,"Fanta", null, 3.44, "carbonated", false));
+        menuItemList.add(new Product(++menuID,"Capyy", null, 4.4, "non cabonated", false));
+
+        System.out.println("   ");
+        menuItemList.add(new Product(++menuID,"Espresso", null, 2.32, "coffe from Columbia ", false));
+        menuItemList.add(new Product(++menuID,"Cappuccino", null, 3.44, "coffe from Egipt and milk natural",false));
+        menuItemList.add(new Product(++menuID,"Latte Macchiato", null, 4.4, "coffe from USA and alomd milk",false));
+
+
+        System.out.println("   ");
+        menuItemList.add(new Product(++menuID,"stew meat", 1, 24.32, "let your mouth water - price per 100gr, please choose grams",true));
+        menuItemList.add(new Product(++menuID,"potatoes ", 1, 34.44, "let your mouth water",true));
+        menuItemList.add(new Product(++menuID,"vegetarian food", 1, 16.4, "let your mouth water",true));
+
+        System.out.println("   ");
+        menuItemList.add(new Product(++menuID,"pancakes", 1, 14.32, "very good",false));
+        menuItemList.add(new Product(++menuID,"mix fruit", 1, 10.44, "very good",false));
+        menuItemList.add(new Product(++menuID,"apple cake", 1, 9.4, "very good",false));
+        menuStorage.write(menuItemList);
+
+        for (Product menuItemproduct : menuItemList) {
+            System.out.println(menuItemproduct.displayInFile());
         }
-//        MenuStorage menuStorage = new MenuStorage();
-//        menuStorage.write(juice);
 
-//
-//        juice.add(new Product("Coca-Cola", null, 2.32, "carbonated"));
-//        juice.add(new Product("Fanta", null, 3.44, "carbonated"));
-//        juice.add(new Product("Capyy", null, 4.4, "non cabonated"));
-//
-//        for (Product p : juice) {
-//            System.out.println(p.getName() + " " + p.getWeight() + " " + p.getPrice() + " " + p.getDescription());
-//
-//        }
-//        System.out.println("   ");
-//        List<Product> coffee = new ArrayList<>();
-//        coffee.add(new Product("Espresso", null, 2.32, "coffe from Columbia "));
-//        coffee.add(new Product("Cappuccino", null, 3.44, "coffe from Egipt and milk natural"));
-//        coffee.add(new Product("Latte Macchiato", null, 4.4, "coffe from USA and alomd milk"));
-//
-//        for (Product c : coffee) {
-//            System.out.println(c.getName() + " " + c.getWeight() + " " + c.getPrice() + " " + c.getDescription());
-//        }
-//
-//        System.out.println("   ");
-//        List<Product> food = new ArrayList<>();
-//        food.add(new Product("stew meat", 1, 24.32, "let your mouth water"));
-//        food.add(new Product("potatoes ", 1, 34.44, "let your mouth water"));
-//        food.add(new Product("vegetarian food", 1, 16.4, "let your mouth water"));
-//
-//        for (Product c : food) {
-//            System.out.println(c.getName() + " " + c.getWeight() + " " + c.getPrice() + " " + c.getDescription());
-//        }
-//        System.out.println("   ");
-//        List<Product> dessert = new ArrayList<>();
-//        dessert.add(new Product("pancakes", 1, 14.32, "very good"));
-//        dessert.add(new Product("mix fruit", 1, 10.44, "very good"));
-//        dessert.add(new Product("apple cake", 1, 9.4, "very good"));
-//
-//        for (Product c : dessert) {
-//            System.out.println(c.getName() + " " + c.getWeight() + " " + c.getPrice() + " " + c.getDescription());
-//        }
+        int userCommandKey = 0;
+        do {
+            System.out.println(" " +
+                    "1. Adauga Produs \n " +
+                    "2. Vizualizeaza comanda \n " +
+                    "3. Plaseaza comanda \n " +
+                    "4. Cheama ospatar \n " +
+                    "5. Cere Nota \n " +
+                    "6. Zona feedback \n " +
+                    "7. Exit");
+
+            userCommandKey = readInputValue();
+            switch (userCommandKey) {
+                case 1:
+                    System.out.println("Alege produsul din meniu folosind numarul produsului");
+                    createOrder();
+                    break;
+                case 2:
+                    System.out.println("Comanda dumneavoastra:");
+                    showOrderList();
+                    break;
+                case 3:
+                    System.out.println("Plaseaza comnda");
+                    break;
+                case 4:
+                    System.out.println("Cheama ospatar");
+                    break;
+                case 5:
+                    System.out.println("Cere nota");
+                    break;
+                case 6:
+                    System.out.println("Zona de feeadback");
+                    break;
+            }
+        } while (userCommandKey < 7);
 
 
+        menuStorage.closeFile();
+    }
+
+    public static int readInputValue() {
+        Scanner sc = new Scanner(System.in);
+        int numb = sc.nextInt();
+        return numb;
+    }
+
+    public static void createOrder() {
+        int menuItemID = 0;
+        do {
+            menuItemID = readInputValue();
+            switch (menuItemID) {
+                case 0:
+                    break;
+                 default:
+                     if(menuItemList.get(menuItemID - 1).isPerQuantity()) {
+                         System.out.println("Adauga numarul de portii");
+                         int portions = readInputValue();
+                         Product product = menuItemList.get(menuItemID - 1);
+                         product.setPortions(portions);
+                         orderList.add(product);
+//                         orderList.add(menuItemList.get(menuItemID - 1));
+
+                     } else {
+                         orderList.add(menuItemList.get(menuItemID - 1));
+                     }
+                     System.out.println("Adauga alt produs sau 0 ca sa te intorci la meniul anterior");
+                    break;
+            }
+        } while (menuItemID > 0);
+    }
+
+    public static void showOrderList() {
+        double intermediarPrice = 0d;
+        for (Product product : orderList) {
+            if(product.isPerQuantity()) {
+                intermediarPrice += product.getPrice() * product.getPortions();
+            } else {
+                intermediarPrice += product.getPrice();
+            }
+            System.out.println(product.displayInFile());
+        }
+        System.out.println("Current price: "+ intermediarPrice);
     }
 }
+
